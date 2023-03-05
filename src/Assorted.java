@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class Assorted {
@@ -14,7 +16,18 @@ public class Assorted {
      *         integer data types.
      */
     public static int findSum(List<?> list) {
-        return 0;
+        int sum = 0;
+        ArrayList<Integer> temp = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            try{
+                sum += (int) list.get(i);
+            }
+            catch(Exception e){
+                int tempx = Integer.parseInt((String) list.get(i));
+                sum += tempx;
+            }
+        }
+        return sum;
     }
 
     /**
@@ -26,7 +39,18 @@ public class Assorted {
      * @return a list containing integers only.
      */
     public static List<Integer> filterStrings(List list) {
-        return null;
+        List<Integer> newList = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            try{
+                if(list.get(i) == list.get(i)){
+                    newList.add((Integer) list.get(i));
+                }
+            }
+            catch(Exception e){
+                ;
+            }
+        }
+        return newList;
     }
 
     /**
@@ -39,7 +63,14 @@ public class Assorted {
      *         e.g. ["1: a", "2: b", "3: c"]
      */
     public static List<String> lineNumbering(List<String> list) {
-        return null;
+        int tempint = 1;
+        List<String> newList = new ArrayList<>();
+        for(int i = 0; i < list.size(); i++){
+            String temp = "" + tempint + ": " + list.get(i);
+            newList.add(temp);
+            tempint++;
+        }
+        return newList;
     }
 
     /**
@@ -61,7 +92,12 @@ public class Assorted {
      * @return the number of people who are still on the bus after the last stop.
      */
     public static int busStop(List<Integer[]> list) {
-        return 0;
+        int people = 0;
+        for(Integer[] i : list){
+            people += i[0];
+            people -= i[1];
+        }
+        return people;
     }
 
     /**
@@ -73,7 +109,11 @@ public class Assorted {
      *         Eg: [0, 0, 0, 1] is treated as 0001 which is the binary representation of 1.
      */
     public static int toBinary(List<Integer> list) {
-        return 0;
+        int sum = 0;
+        for (int i = 0; i < list.size(); i++) {
+            sum += list.get(i) * Math.pow(2, list.size()-1-i);
+        }
+        return sum;
     }
 
     /**
@@ -92,7 +132,16 @@ public class Assorted {
      *              subtractList([1,2,2,2,3], [2]) returns [1,3]
      */
     public static List<Integer> subtractList(List<Integer> listA, List<Integer> listB) {
-        return null;
+        List<Integer> temp = new ArrayList<>();
+        for(Integer a : listA){
+            for(Integer b : listB){
+                if(a == b){
+                    temp.add(a);
+                }
+            }
+        }
+        listA.removeAll(temp);
+        return listA;
     }
 
     /**
@@ -106,7 +155,24 @@ public class Assorted {
      *         integers remain in their original position.
      */
     public static List<Integer> sortOdd(List<Integer> list) {
-        return null;
+        ArrayList<Integer> temp = new ArrayList<>();
+        for(Integer value : list){
+            if((int) value % 2 == 1){
+                temp.add(value);
+            }
+        }
+        Collections.sort(temp);
+
+        int j = 0;
+        for(int i = 0; i < list.size(); i++){
+            if((int) list.get(i) % 2 == 1){
+                list.remove(i);
+                list.add(i, temp.get(j));
+                j++;
+            }
+        }
+
+        return list;
     }
 
     /**
@@ -131,7 +197,28 @@ public class Assorted {
      *              uniqueNumber(1,100) returns [1,2,3,4,5,6,7,8,9,89]
      */
     public static List<Integer> uniqueNumber(int lowerBound, int upperBound) {
-        return null;
+        List<Integer> returnList = new ArrayList<>();
+        for (int i = lowerBound; i < upperBound+1; i++) {
+            int sum = 0;
+            int tempi = i;
+            int digits = 0; // how many digits are in the number
+
+            while (tempi > 0) {
+                digits++; // adds one everytime it divides itself by 10
+                tempi /= 10;
+            }
+
+            tempi = i;
+
+            while (tempi > 0) {
+                sum += Math.pow(tempi % 10, digits--);
+                tempi /= 10;
+            }
+            if (sum == i) {
+                returnList.add(sum);
+            }
+        }
+        return returnList;
     }
 
     /**
@@ -154,7 +241,20 @@ public class Assorted {
      *              filterNTimes([20,37,20,21], 1) returns [20,37,21]
      */
     public static List<Integer> filterNTimes(List<Integer> list, int n) {
-        return null;
+        for(int i = 0; i < list.size(); i++){
+            int motif = list.get(i);
+            int count = 0;
+            for(int j = 0; j < list.size(); j++){
+                if(list.get(j) == motif){
+                    count++;
+                    if(count > n){
+                        list.remove(j);
+                    }
+                }
+            }
+        }
+
+        return list;
     }
 
     /**
@@ -191,7 +291,48 @@ public class Assorted {
      *              ["WEST", "WEST"]
      */
     public static List<String> wildWest(List<String> directions) {
-        return null;
+        int x = 0;
+        int y = 0;
+        List<String> newDirections = new ArrayList<>();
+        for(String direction : directions){
+            if(direction.equals("NORTH")){
+                y++;
+            }
+            if(direction.equals("SOUTH")){
+                y--;
+            }
+            if(direction.equals("EAST")){
+                x++;
+            }
+            if(direction.equals("WEST")){
+                x--;
+            }
+        }
+
+        while(!(x==0)){
+            if(x > 0){
+               newDirections.add("EAST");
+                x--;
+            }
+            if(x < 0){
+                newDirections.add("WEST");
+                x++;
+            }
+        }
+
+        while(!(y==0)){
+            if(y > 0){
+                newDirections.add("NORTH");
+                y--;
+            }
+            if(y < 0){
+                newDirections.add("SOUTH");
+                y++;
+            }
+        }
+
+        System.out.println(newDirections);
+        return newDirections;
     }
 
     /**
@@ -215,6 +356,12 @@ public class Assorted {
      *              queueTime([2,3,10], 2) returns 12
      */
     public static int queueTime(List<Integer> queue, int tillsOpen) {
-        return 0;
+        int[] tills = new int[tillsOpen];
+        for (int min : queue){
+            tills[0] += min;
+            Arrays.sort(tills);
+        }
+
+        return (tills[tillsOpen - 1]);
     }
 }
